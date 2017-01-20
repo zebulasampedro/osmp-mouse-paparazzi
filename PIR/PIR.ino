@@ -8,14 +8,14 @@
 #include <SoftwareSerial.h>  
 #define chipSelect 4
 
-#if ARDUINO >= 100
+//#if ARDUINO >= 100
 // On Uno: camera TX connected to pin 2, camera RX to pin 3:
 SoftwareSerial cameraconnection = SoftwareSerial(2, 3);
 // On Mega: camera TX connected to pin 69 (A15), camera RX to pin 3:
 //SoftwareSerial cameraconnection = SoftwareSerial(69, 3);
-#else
-NewSoftSerial cameraconnection = NewSoftSerial(2, 3);
-#endif
+//#else
+//NewSoftSerial cameraconnection = NewSoftSerial(2, 3);
+//#endif
 Adafruit_VC0706 cam = Adafruit_VC0706(&cameraconnection);
 
 /*
@@ -71,13 +71,6 @@ void setupCamera() {
   if (imgsize == VC0706_160x120) Serial.println("160x120");
 }
 
-void sendResetCmd() {
-      cameraconnection.write(0x56);
-      cameraconnection.write((byte)0);
-      cameraconnection.write(0x26);
-      cameraconnection.write((byte)0);
-}
-
 void takePicture() {
   if (! cam.takePicture()) 
     Serial.println("Failed to snap!");
@@ -127,8 +120,11 @@ void takePicture() {
   time = millis() - time;
   Serial.println("done!");
   Serial.print(time); Serial.println(" ms elapsed");
-  sendResetCmd();
-  delay(4000);
+  if(cam.reset()) {
+    Serial.println("Reset camera");
+  } else {
+    Serial.println("Camera reset failed");
+  }
 }
 
 void setup() {
