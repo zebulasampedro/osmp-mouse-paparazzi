@@ -8,14 +8,8 @@
 #include <SoftwareSerial.h>  
 #define chipSelect 4
 
-//#if ARDUINO >= 100
 // On Uno: camera TX connected to pin 2, camera RX to pin 3:
 SoftwareSerial cameraconnection = SoftwareSerial(2, 3);
-// On Mega: camera TX connected to pin 69 (A15), camera RX to pin 3:
-//SoftwareSerial cameraconnection = SoftwareSerial(69, 3);
-//#else
-//NewSoftSerial cameraconnection = NewSoftSerial(2, 3);
-//#endif
 Adafruit_VC0706 cam = Adafruit_VC0706(&cameraconnection);
 
 /*
